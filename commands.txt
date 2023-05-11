@@ -1,0 +1,16 @@
+
+ffmpeg -i video.mp4 -an -c:v libx264 -vf "scale=w=1920:h=1080:force_original_aspect_ratio=decrease" video_1080.mp4
+ffmpeg -i video.mp4 -an -c:v libx264 -vf "scale=w=1280:h=720:force_original_aspect_ratio=decrease" video_720.mp4
+ffmpeg -i video.mp4 -an -c:v libx264 -vf "scale=w=640:h=480:force_original_aspect_ratio=decrease" video_480.mp4
+
+ffmpeg -i video.mp4 -c:a copy -vn -f mp4 audio.mp4
+
+
+MP4Box -dash 2000 -frag 2000 -rap -profile dashavc264:live -out output/video.mpd video_1080.mp4#video:id=video_1080 video_720.mp4#video:id=video_720 video_480.mp4#video:id=video_480 audio.mp4#audio:id=audio_1
+
+MP4Box -dash 2000 -frag 2000 -rap -profile dashavc264:live \
+    -out output/video.mpd \
+    video_1080.mp4#video:id=video_1080 \
+    video_720.mp4#video:id=video_720 \
+    video_480.mp4#video:id=video_480 \
+    audio.mp4#audio:id=audio_1
